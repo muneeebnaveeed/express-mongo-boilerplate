@@ -3,6 +3,17 @@
         "wesbos"
     ],
     "rules": {
-        "no-unused-vars": "error"
+        "no-unused-vars": "error",
+        "object-shorthand": "off",
+        "prettier/prettier": [
+            "error",
+            {
+                "trailingComma": "es5",
+                "singleQuote": true,
+                "endOfLine": "auto",
+                "tabWidth": 4,
+                "printWidth": 120
+            }
+        ]
     }
 }
