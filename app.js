@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const Database = require('./db');
 const productsRoute = require('./routes/products');
+const categoriesRoute = require('./routes/categories');
 const AppError = require('./utils/AppError');
 const ErrorController = require('./controllers/errors');
 
@@ -17,6 +18,7 @@ app.listen(port, () => {
     app.use(express.json());
 
     app.use('/products', productsRoute);
+    app.use('/categories', categoriesRoute);
 
     app.use('*', (req, res, next) => next(new AppError(`Cannot find ${req.originalUrl} on the server!`, 404)));
 
