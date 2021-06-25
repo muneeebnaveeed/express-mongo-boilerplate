@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const Category = require('./categories');
+const uniqueValidator = require('mongoose-unique-validator');
+const Category = require('./categoriesModel');
 
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'Please enter a title'],
-        unique: true,
+        sparse: true,
         minlength: [4, 'Please enter a bare minimum of 4 characters in title'],
         maxlength: [25, 'Only 25 characters are allowed in title'],
     },
@@ -28,7 +29,10 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Category',
     },
+    createdAt: { type: Date, required: true, default: Date.now() },
 });
+
+productSchema.plugin(uniqueValidator);
 
 productSchema.post('save', async (product, next) => {
     const { category: categoryId } = product;

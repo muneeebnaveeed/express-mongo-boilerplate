@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const Category = require('../models/categories');
+const Category = require('../models/categoriesModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 
@@ -54,31 +54,30 @@ module.exports.editCategory = catchAsync(async function (req, res, next) {
     res.status(200).json(category);
 });
 
-module.exports.deleteCategories = catchAsync(async function (req, res, next) {
-    let categoryIds = req.body;
+async function handleDeleteCategories(ids) {
+    let categoryIds = ids;
 
     for (const id of categoryIds) {
-        if (!mongoose.isValidObjectId(id)) return next(new AppError('Please enter valid ids', 400));
+        if (!mongoose.isValidObjectId(id)) throw new AppError('Please enter valid ids', 400);
     }
 
     categoryIds = categoryIds.map((id) => mongoose.Types.ObjectId(id));
 
-    await Category.deleteMany({
-        _id: {
-            $in: categoryIds,
-        },
-    });
+    await Category.deleteCategories(categoryIds);
+}
 
-    res.status(200).json();
+module.exports.deleteCategories = catchAsync(async function (req, res, next) {
+    const categoryIds = req.body;
+
+    await handleDeleteCategories(categoryIds)
+        .then(() => res.status(200).json())
+        .catch((err) => next(err));
 });
 
-module.exports.deleteCategoryById = catchAsync(async function (req, res, next) {
-    const categoryId = req.params.id;
+module.exports.deleteCategory = catchAsync(async function (req, res, next) {
+    const categoryIds = req.params.id.split(',');
 
-    if (!mongoose.isValidObjectId(categoryId)) return next(new AppError('Please enter a valid id', 400));
-
-    // await Category.deleteOne({ _id: categoryId });
-    await Category.deleteCategory(categoryId);
-
-    res.status(200).json();
+    await handleDeleteCategories(categoryIds)
+        .then(() => res.status(200).json())
+        .catch((err) => next(err));
 });

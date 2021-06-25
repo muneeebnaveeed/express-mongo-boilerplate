@@ -9,7 +9,7 @@ module.exports = class Database {
     }
 
     getAuthString(password) {
-        return this.connectionString.replace('<PASSWORD>', password);
+        return this.connectionString.replace('<password>', password);
     }
 
     connect() {

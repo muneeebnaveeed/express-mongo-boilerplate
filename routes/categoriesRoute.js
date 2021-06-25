@@ -5,15 +5,15 @@ const {
     addCategory,
     editCategory,
     getCategory,
-    deleteCategoryById,
+    deleteCategory,
     deleteCategories,
-} = require('../controllers/categories');
+} = require('../controllers/categoriesController');
 
 router.route('/').get(getCategories);
 router.route('/:id').get(getCategory);
 router.route('/').post(addCategory);
 router.route('/:id').patch(editCategory);
 router.route('/bulk').delete(deleteCategories);
-router.route('/id/:id').delete(deleteCategoryById);
+router.route('/id/:id').delete(deleteCategory);
 
 module.exports = router;

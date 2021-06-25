@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const Product = require('../models/products');
-const Category = require('../models/categories');
+const Product = require('../models/productsModel');
+const Category = require('../models/categoriesModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 
@@ -99,15 +99,15 @@ module.exports.deleteProducts = catchAsync(async function (req, res, next) {
 });
 
 module.exports.deleteProduct = catchAsync(async function (req, res, next) {
-    const productId = req.params.id;
+    let productIds = req.params.id.split(',');
 
-    if (!mongoose.isValidObjectId(productId)) return next(new AppError('Please enter a valid id', 400));
+    for (const id of productIds) {
+        if (!mongoose.isValidObjectId(id)) return next(new AppError('Please enter valid ids', 400));
+    }
 
-    const product = await Product.findById(productId);
+    productIds = productIds.map((id) => mongoose.Types.ObjectId(id));
 
-    if (!product) return next(new AppError('Product does not exist', 400));
-
-    await Product.deleteProduct(product);
+    await Product.deleteProducts(productIds);
 
     res.status(200).json();
 });

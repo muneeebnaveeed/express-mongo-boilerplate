@@ -8,7 +8,7 @@ const {
     deleteProducts,
     addProducts,
     deleteProduct,
-} = require('../controllers/products');
+} = require('../controllers/productsController');
 
 router.route('/').get(getProducts);
 router.route('/:id').get(getProduct);
