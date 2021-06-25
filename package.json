@@ -1,7 +1,7 @@
 {
-  "name": "snoop-backend",
-  "version": "1.0.0",
-  "description": "",
+  "name": "express-mongo-boilerplate",
+  "version": "0.5.0",
+  "description": "A boilerplate infrastructure template build for protyping web servers built in ExpressJS and MongoDB with built-in stateless authentication using JWT",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
